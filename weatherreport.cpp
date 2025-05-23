@@ -6,6 +6,7 @@ using namespace std;
 
 namespace WeatherSpace
 {
+    // Interface representing a generic weather sensor
     class IWeatherSensor {
         public:
             virtual double TemperatureInC() const = 0;
@@ -14,12 +15,8 @@ namespace WeatherSpace
             virtual int WindSpeedKMPH() const = 0;
             virtual ~IWeatherSensor() = default; // Virtual destructor
     };
-    /// <summary>
-    /// This is a stub for a weather sensor. For the sake of testing 
-    /// we create a stub that generates weather data and allows us to
-    /// test the other parts of this application in isolation
-    /// without needing the actual Sensor during development
-    /// </summary>
+
+    // Stub sensor class for testing weather reports
     class SensorStub : public IWeatherSensor {
         private:
             double temperature;
@@ -28,9 +25,11 @@ namespace WeatherSpace
             int windSpeed;
 
         public:
+            // Constructor to set initial conditions
             SensorStub(double temp, int precip, int hum, int wind)
                 : temperature(temp), precipitation(precip), humidity(hum), windSpeed(wind) {}
 
+            // Override methods to return preset values
             double TemperatureInC() const override {
                 return temperature;
             }
@@ -48,14 +47,17 @@ namespace WeatherSpace
             }
     };
 
+    // Generate a weather report based on sensor readings
     string Report(const IWeatherSensor& sensor)
     {
         int precipitation = sensor.Precipitation();
         int windSpeed = sensor.WindSpeedKMPH();
         double temperature = sensor.TemperatureInC();
 
+        // Default report
         string report = "Sunny Day";
 
+        // Determine actual weather based on readings
         if (temperature > 25) {
             if (precipitation >= 20 && precipitation < 60) {
                 report = "Partly Cloudy";
@@ -65,30 +67,35 @@ namespace WeatherSpace
                 report = "Alert, Stormy with heavy rain";
             }
         }
+
         return report;
     }
 
+    // Test case for stormy condition
     void TestRainy()
     {
-        SensorStub sensor(26, 70, 72, 52);
+        SensorStub sensor(26, 70, 72, 52); // High temp, high precipitation, high wind
         string report = Report(sensor);
         cout << "TestRainy Report: " << report << endl;
-        assert(report.find("rain") != string::npos); // Ensure "rain" is in the report
+        assert(report.find("rain") != string::npos);
     }
 
+    // Test case for heavy rain with calm winds
     void TestHighPrecipitation()
     {
-        SensorStub sensor(26, 70, 72, 40);
+        SensorStub sensor(26, 70, 72, 40); // High precipitation, low wind
         string report = Report(sensor);
         cout << "TestHighPrecipitation Report: " << report << endl;
-        assert(report.length() > 0); // Ensure the report is not empty
-        assert(report.find("Heavy Rain") != string::npos); // Ensure "Heavy Rain" is in the report
+        assert(!report.empty());
+        assert(report.find("Heavy Rain") != string::npos);
     }
 }
 
+// Run all weather-related tests
 void testWeatherReport() {
     cout << "\nWeather report test\n";
     WeatherSpace::TestRainy();
     WeatherSpace::TestHighPrecipitation();
     cout << "All is well (maybe)\n";
 }
+
