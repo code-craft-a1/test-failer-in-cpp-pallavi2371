@@ -1,22 +1,23 @@
 #include <iostream>
 #include <assert.h>
 
-char size(int cms) {
-    char sizeName = '\0';
-    if(cms < 38) {
-        sizeName = 'S';
-    } else if(cms > 38 && cms < 42) {
-        sizeName = 'M';
-    } else if(cms > 42) {
-        sizeName = 'L';
+// Class to encapsulate logic for determining t-shirt size
+class TShirtSizer {
+public:
+    static char GetSize(int cms) {
+        if (cms <= 38) return 'S';
+        if (cms <= 42) return 'M';
+        return 'L';
     }
-    return sizeName;
-}
+};
 
+// Tests for size classification
 void testTshirtSize() {
     std::cout << "\nTshirt size test\n";
-    assert(size(37) == 'S');
-    assert(size(40) == 'M');
-    assert(size(43) == 'L');
+    assert(TShirtSizer::GetSize(37) == 'S');
+    assert(TShirtSizer::GetSize(38) == 'S');
+    assert(TShirtSizer::GetSize(40) == 'M');
+    assert(TShirtSizer::GetSize(42) == 'M');
+    assert(TShirtSizer::GetSize(43) == 'L');
     std::cout << "All is well (maybe!)\n";
 }
