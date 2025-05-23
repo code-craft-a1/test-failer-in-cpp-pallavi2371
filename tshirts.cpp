@@ -1,26 +1,23 @@
 #include <iostream>
 #include <assert.h>
 
-// Returns the size category based on the chest measurement in centimeters
-char size(int cms) {
-    if (cms <= 38) {
-        return 'S';  // Small
-    } else if (cms <= 42) {
-        return 'M';  // Medium
-    } else {
-        return 'L';  // Large
+// Class to encapsulate logic for determining t-shirt size
+class TShirtSizer {
+public:
+    static char GetSize(int cms) {
+        if (cms <= 38) return 'S';
+        if (cms <= 42) return 'M';
+        return 'L';
     }
-}
+};
 
-// Test cases for the size function
+// Tests for size classification
 void testTshirtSize() {
     std::cout << "\nTshirt size test\n";
-
-    assert(size(37) == 'S'); // Edge case: under lower limit
-    assert(size(38) == 'S'); // Boundary condition for 'S'
-    assert(size(40) == 'M'); // Normal case for 'M'
-    assert(size(42) == 'M'); // Boundary condition for 'M'
-    assert(size(43) == 'L'); // Case above 'M'
-
+    assert(TShirtSizer::GetSize(37) == 'S');
+    assert(TShirtSizer::GetSize(38) == 'S');
+    assert(TShirtSizer::GetSize(40) == 'M');
+    assert(TShirtSizer::GetSize(42) == 'M');
+    assert(TShirtSizer::GetSize(43) == 'L');
     std::cout << "All is well (maybe!)\n";
 }
